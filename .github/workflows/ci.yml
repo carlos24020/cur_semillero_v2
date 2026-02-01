@@ -27,4 +27,4 @@ jobs:
           black --check app
           isort --check-only app
       - name: Test
-        run: pytest -q
+        run: python -m pytest -q
