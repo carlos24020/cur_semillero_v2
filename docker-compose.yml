@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./cur_semillero.db:/code/cur_semillero.db
