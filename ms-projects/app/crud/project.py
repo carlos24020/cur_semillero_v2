@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-
 from app.models.project import Project
 from app.schemas.project import ProjectCreate
 
@@ -13,7 +12,7 @@ def get_by_id(db: Session, project_id: int):
 
 
 def create(db: Session, obj_in: ProjectCreate):
-    db_obj = Project(**obj_in.dict())
+    db_obj = Project(**obj_in.model_dump())
     db.add(db_obj)
     db.commit()
     db.refresh(db_obj)
@@ -21,12 +20,9 @@ def create(db: Session, obj_in: ProjectCreate):
 
 
 def remove(db: Session, project_id: int):
-    # Buscamos el proyecto por su ID
     db_project = db.query(Project).filter(Project.id == project_id).first()
-
     if db_project:
-        db.delete(db_project)  # Lo borramos de la tabla
-        db.commit()  # Confirmamos la eliminación en la base de datos
+        db.delete(db_project)
+        db.commit()
         return True
-
     return False

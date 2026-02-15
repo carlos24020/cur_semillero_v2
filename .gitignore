@@ -1,0 +1,28 @@
+# Virtual environment
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+
+# Test and coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Databases
+test.db
+
+# IDE and system files
+.vscode/
+.DS_Store
+
+# Static build / deploy artifacts
+dist/
+build/
+
+# Ignore local env files
+.env

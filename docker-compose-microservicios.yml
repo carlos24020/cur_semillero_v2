@@ -1,0 +1,48 @@
+# Docker Compose para los microservicios (OPCIONAL - Para uso futuro)
+# 
+# Para usar:
+# 1. Instalar Docker Desktop
+# 2. Ejecutar: docker-compose up
+# 
+# El servicio estará disponible en:
+# - MS-Leaders: http://localhost:8001
+# - MS-Projects: http://localhost:8000
+
+version: '3.8'
+
+services:
+  ms-leaders:
+    build:
+      context: ./ms-leaders
+    container_name: ms-leaders
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_URL=sqlite:///./ms_leaders.db
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 8001
+    volumes:
+      - ./ms-leaders:/app
+    networks:
+      - semillero-network
+
+  ms-projects:
+    build:
+      context: ./ms-projects
+    container_name: ms-projects
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./ms_projects.db
+      - LEADERS_SERVICE_URL=http://ms-leaders:8001
+    command: python -m uvicorn main:app --host 0.0.0.0 --port 8000
+    volumes:
+      - ./ms-projects:/app
+      - ./static:/app/app/static
+    depends_on:
+      - ms-leaders
+    networks:
+      - semillero-network
+
+networks:
+  semillero-network:
+    driver: bridge
